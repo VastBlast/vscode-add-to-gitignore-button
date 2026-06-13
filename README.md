@@ -1,4 +1,4 @@
-# Add to .gitignore
+# Add to Gitignore Button
 
 Adds selected files and folders to the applicable `.gitignore` from the VS Code Explorer context menu.
 
@@ -17,8 +17,18 @@ Adds selected files and folders to the applicable `.gitignore` from the VS Code 
 npm run compile
 npm run lint
 npm test
+npm run package
 ```
 
 The tests cover POSIX paths, Windows paths, nested `.gitignore` files, repositories above the opened workspace folder, duplicate selections, line endings, escaping, and invalid paths.
 
 Run `npm run test:vscode` only when you need to launch the full VS Code extension test host. In WSL, that requires the VS Code/Electron native Linux libraries to be installed.
+
+## Publishing
+
+```sh
+npm run package
+npm run publish
+```
+
+The extension is published from `https://github.com/VastBlast/vscode-add-to-gitignore` under the `VastBlast` publisher.

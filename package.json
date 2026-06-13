@@ -1,13 +1,30 @@
 {
-  "name": "add-to-gitignore",
-  "displayName": "Add to .gitignore",
+  "name": "vastblast-add-to-gitignore",
+  "displayName": "Add to Gitignore Button",
   "description": "Add files and folders to the appropriate .gitignore from the Explorer context menu.",
-  "version": "0.0.1",
+  "version": "0.1.1",
+  "publisher": "VastBlast",
+  "author": "VastBlast",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VastBlast/vscode-add-to-gitignore.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VastBlast/vscode-add-to-gitignore/issues"
+  },
+  "homepage": "https://github.com/VastBlast/vscode-add-to-gitignore#readme",
   "engines": {
     "vscode": "^1.120.0"
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "gitignore",
+    "git",
+    "ignore",
+    "explorer"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -34,7 +51,9 @@
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
     "test": "mocha --ui tdd out/test/extension.test.js",
-    "test:vscode": "npm test && vscode-test"
+    "test:vscode": "npm test && vscode-test",
+    "package": "vsce package --no-dependencies",
+    "publish": "vsce publish --no-dependencies"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -42,9 +61,14 @@
     "@types/vscode": "^1.120.0",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.9.2",
     "eslint": "^9.39.3",
     "mocha": "^11.7.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.1"
+  },
+  "overrides": {
+    "diff": "^8.0.3",
+    "serialize-javascript": "^7.0.5"
   }
 }
