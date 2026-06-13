@@ -1,4 +1,5 @@
 import * as assert from 'assert';
+import { readFileSync } from 'fs';
 import * as path from 'path';
 import {
 	addTargetsToGitignore,
@@ -55,6 +56,18 @@ class MemoryGitignoreFileSystem implements GitignoreFileSystem {
 		return this.pathApi.resolve(filePath);
 	}
 }
+
+suite('extension manifest', () => {
+	test('contributes the Explorer context menu command for local and remote workspace resources', () => {
+		const manifest = JSON.parse(readFileSync(path.join(__dirname, '..', '..', 'package.json'), 'utf8'));
+		const menuItems = manifest.contributes.menus['explorer/context'];
+		const addCommand = menuItems.find((item: { command: string }) => item.command === 'add-to-gitignore.add');
+
+		assert.ok(addCommand);
+		assert.strictEqual(addCommand.when, "resourceScheme == 'file' || resourceScheme == 'vscode-remote'");
+		assert.deepStrictEqual(manifest.extensionKind, ['workspace']);
+	});
+});
 
 suite('gitignore pattern generation', () => {
 	test('anchors file and directory patterns to the selected .gitignore directory', () => {

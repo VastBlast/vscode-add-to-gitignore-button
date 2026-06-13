@@ -44,7 +44,7 @@ function getCommandResources(resource?: vscode.Uri, selectedResources?: readonly
 	const fileResources: vscode.Uri[] = [];
 
 	for (const currentResource of resources) {
-		if (currentResource.scheme !== 'file') {
+		if (currentResource.scheme !== 'file' && currentResource.scheme !== 'vscode-remote') {
 			throw new Error(`Only file-system resources can be added to .gitignore.`);
 		}
 
