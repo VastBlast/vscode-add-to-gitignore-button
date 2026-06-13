@@ -1,0 +1,2 @@
+# vscode-add-to-gitignore
+
