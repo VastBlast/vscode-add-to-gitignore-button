@@ -2,9 +2,10 @@
   "name": "vastblast-add-to-gitignore",
   "displayName": "Add to Gitignore Button",
   "description": "Add files and folders to the appropriate .gitignore from the Explorer context menu.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "VastBlast",
   "author": "VastBlast",
+  "icon": "assets/icon.png",
   "license": "MIT",
   "repository": {
     "type": "git",

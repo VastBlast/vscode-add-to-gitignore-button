@@ -2,6 +2,16 @@
 
 Adds selected files and folders to the applicable `.gitignore` from the VS Code Explorer context menu.
 
+## Install
+
+[Install from the Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=VastBlast.vastblast-add-to-gitignore)
+
+Or install from the command line:
+
+```sh
+code --install-extension VastBlast.vastblast-add-to-gitignore
+```
+
 ## Behavior
 
 - Right-click one or more files or folders in Explorer and run **Add to .gitignore**.
