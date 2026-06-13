@@ -1,26 +1,74 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+import * as fs from 'fs/promises';
 import * as vscode from 'vscode';
+import { addTargetsToGitignore, nodeGitignoreFileSystem } from './gitignore';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "add-to-gitignore" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('add-to-gitignore.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Add To Gitignore!');
-	});
-
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(vscode.commands.registerCommand('add-to-gitignore.add', addToGitignore));
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+async function addToGitignore(resource?: vscode.Uri, selectedResources?: vscode.Uri[]) {
+	try {
+		const resources = getCommandResources(resource, selectedResources);
+		if (resources.length === 0) {
+			vscode.window.showErrorMessage('Select a file or folder to add to .gitignore.');
+			return;
+		}
+
+		const targets = await Promise.all(resources.map(createTarget));
+		const result = await addTargetsToGitignore(targets, nodeGitignoreFileSystem);
+
+		if (result.addedPatterns.length === 0) {
+			const itemLabel = resources.length === 1 ? 'item is' : 'items are';
+			vscode.window.showInformationMessage(`Selected ${itemLabel} already in .gitignore.`);
+			return;
+		}
+
+		const itemLabel = result.addedPatterns.length === 1 ? 'item' : 'items';
+		const fileLabel = result.changedGitignorePaths.length === 1 ? '.gitignore' : `${result.changedGitignorePaths.length} .gitignore files`;
+		vscode.window.showInformationMessage(`Added ${result.addedPatterns.length} ${itemLabel} to ${fileLabel}.`);
+	} catch (error) {
+		const message = error instanceof Error ? error.message : String(error);
+		vscode.window.showErrorMessage(`Could not add to .gitignore: ${message}`);
+	}
+}
+
+function getCommandResources(resource?: vscode.Uri, selectedResources?: readonly vscode.Uri[]) {
+	const resources = selectedResources && selectedResources.length > 0
+		? selectedResources
+		: resource
+			? [resource]
+			: vscode.window.activeTextEditor
+				? [vscode.window.activeTextEditor.document.uri]
+				: [];
+	const seenResources = new Set<string>();
+	const fileResources: vscode.Uri[] = [];
+
+	for (const currentResource of resources) {
+		if (currentResource.scheme !== 'file') {
+			throw new Error(`Only file-system resources can be added to .gitignore.`);
+		}
+
+		const resourceKey = currentResource.toString();
+		if (!seenResources.has(resourceKey)) {
+			seenResources.add(resourceKey);
+			fileResources.push(currentResource);
+		}
+	}
+
+	return fileResources;
+}
+
+async function createTarget(resource: vscode.Uri) {
+	const workspaceFolder = vscode.workspace.getWorkspaceFolder(resource);
+	if (!workspaceFolder) {
+		throw new Error(`"${resource.fsPath}" is not inside an open workspace folder.`);
+	}
+
+	const stat = await fs.lstat(resource.fsPath);
+
+	return {
+		path: resource.fsPath,
+		workspaceRoot: workspaceFolder.uri.fsPath,
+		isDirectory: stat.isDirectory(),
+	};
+}

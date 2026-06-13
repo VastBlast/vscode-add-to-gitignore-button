@@ -1,7 +1,7 @@
 {
   "name": "add-to-gitignore",
-  "displayName": "Add To Gitignore",
-  "description": "",
+  "displayName": "Add to .gitignore",
+  "description": "Add files and folders to the appropriate .gitignore from the Explorer context menu.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.120.0"
@@ -9,15 +9,23 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "add-to-gitignore.helloWorld",
-        "title": "Hello World"
+        "command": "add-to-gitignore.add",
+        "title": "Add to .gitignore"
       }
-    ]
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "add-to-gitignore.add",
+          "when": "resourceScheme == file",
+          "group": "navigation@9"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -25,16 +33,18 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
-    "test": "vscode-test"
+    "test": "mocha --ui tdd out/test/extension.test.js",
+    "test:vscode": "npm test && vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.120.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
-    "typescript-eslint": "^8.56.1",
-    "eslint": "^9.39.3",
-    "typescript": "^5.9.3",
+    "@types/vscode": "^1.120.0",
     "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.39.3",
+    "mocha": "^11.7.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1"
   }
 }
