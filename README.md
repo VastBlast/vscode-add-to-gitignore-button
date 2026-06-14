@@ -41,4 +41,4 @@ npm run package
 npm run publish
 ```
 
-The extension is published from `https://github.com/VastBlast/vscode-add-to-gitignore` under the `VastBlast` publisher.
+The extension is published from `https://github.com/VastBlast/vscode-add-to-gitignore-button` under the `VastBlast` publisher.

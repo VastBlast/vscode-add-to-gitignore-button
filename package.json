@@ -2,19 +2,19 @@
   "name": "vastblast-add-to-gitignore",
   "displayName": "Add to Gitignore Button",
   "description": "Add files and folders to the appropriate .gitignore from the Explorer context menu.",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "VastBlast",
   "author": "VastBlast",
   "icon": "assets/icon.png",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/VastBlast/vscode-add-to-gitignore.git"
+    "url": "https://github.com/VastBlast/vscode-add-to-gitignore-button.git"
   },
   "bugs": {
-    "url": "https://github.com/VastBlast/vscode-add-to-gitignore/issues"
+    "url": "https://github.com/VastBlast/vscode-add-to-gitignore-button/issues"
   },
-  "homepage": "https://github.com/VastBlast/vscode-add-to-gitignore#readme",
+  "homepage": "https://github.com/VastBlast/vscode-add-to-gitignore-button#readme",
   "engines": {
     "vscode": "^1.120.0"
   },
@@ -28,7 +28,9 @@
     "gitignore",
     "git",
     "ignore",
-    "explorer"
+    "explorer",
+    "context menu",
+    "button"
   ],
   "main": "./out/extension.js",
   "contributes": {
